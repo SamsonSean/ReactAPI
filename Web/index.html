@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        font-family: sans-serif;
+    }
+</style>
+
+<body>
+    <div class="table-container">
+        <table class="table table-bordered" id="api-table">
+            <thead>
+                <th>Character</th>
+                <th>Hit Points</th>
+                <th>Strength</th>
+                <th>Defense</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+
+    function LoadHeroes(data) {
+        $('#api-table').DataTable({
+            "data": data,
+            "lengthChange": false,
+            'searching': false,
+            'paging': false,
+            "columns": [
+                { "data": "name" },
+                { "data": "hitPoints" },
+                { "data": "strength" },
+                { "data": "defense" },
+            ]
+        });
+    }
+</script>
+
+<script type="text/javascript">
+
+    async function FetchOwners() {
+        try {
+        fetch('https://localhost:7004/api/Character/GetAll', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                 'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJhZG1pbiIsIm5iZiI6MTY5MjA4MDc0NywiZXhwIjoxNjkyMTY3MTQ3LCJpYXQiOjE2OTIwODA3NDd9.9izyZffF5DLhRuvtDoL_Q8lUcs2bmdxE3bjYrOgbi6f00qHuaNAS5V206_2w5HC39OIHMjLUkxIvLcqVZoBYZg'
+            }
+        })
+            .then((response) => {
+              return response.json();
+            })
+            .then((json) => {
+                console.log(json);
+                LoadHeroes(json.data)
+            })
+            .catch(error => {
+              console.log(error);
+            })
+    } catch (error) {
+      console.log(console.log(JSON.stringify(error)));
+    }
+    }
+    FetchOwners();
+</script>

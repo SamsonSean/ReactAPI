@@ -1,0 +1,27 @@
+*{
+    box-sizing: border-box;
+}
+
+
+h1 {
+    color: white;
+    font-size: 1rem;
+    margin-top: -20rem;
+}
+
+.countdown-container{
+    display: flex;
+    
+}
+
+.bigtext {
+    color: white;
+    font-size: 2rem;
+    line-height: 1;
+    margin: 0 2rem;
+}
+
+.countdown-el{
+    color:white;
+    text-align: center;
+}
