@@ -31,8 +31,9 @@ const Login = ({ navigation }) => {
           "username": uname,
           "password": passw
         })
-      })
+      }) 
         .then((response) => {
+          console.log(JSON.stringify(response))
           return response.json();
         })
         .then((response) => {
@@ -52,7 +53,7 @@ const Login = ({ navigation }) => {
         })
         .finally(() => setLoading(false));
     } catch (error) {
-      console.log(console.log(JSON.stringify(error)));
+      console.log('erors');
     }
   }
 

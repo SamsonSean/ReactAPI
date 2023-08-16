@@ -40,10 +40,7 @@ const Hero = ({ navigation }) => {
             console.log(error);
         }
     }
-
-
-
-
+    
     useEffect(() => {
         FetchOwners();
     }, []);
