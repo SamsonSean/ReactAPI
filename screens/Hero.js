@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { API_URL } from '../url/APIurl';
 
-const Hero = () => {
+const Hero = ({ navigation }) => {
     const [ownerData, setOwnerData] = useState([]);
     const [text, setText] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -41,6 +41,9 @@ const Hero = () => {
         }
     }
 
+
+
+
     useEffect(() => {
         FetchOwners();
     }, []);
@@ -53,8 +56,8 @@ const Hero = () => {
                         <Text style={ListStyle.title}>Hero: {item.name}</Text>
                         <Text style={ListStyle.title}>Class: {item.class}</Text>
                     </View>
-                    <View style={{flexDirection: 'row', alignItems: 'center', }}>
-                        <Text style={{ color: 'white', textDecorationLine:'underline', textDecorationColor:'white', margin: 0 }}>View</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Text style={{ color: 'white', textDecorationLine: 'underline', textDecorationColor: 'white', margin: 0 }}>View</Text>
                         <Icon name="arrow-forward-outline" size={20} color="white" style={{ marginLeft: 0 }} />
                     </View>
                 </View>
@@ -66,9 +69,10 @@ const Hero = () => {
 
         return (
             <Item
+                key={item.id}
                 item={item}
                 onPress={() => {
-                    console.log('navigate to hero details');
+                    navigation.navigate('HeroForm')
                 }}
                 style={{ backgroundColor: "black" }}
             />
@@ -98,7 +102,6 @@ const Hero = () => {
         </SafeAreaView>
     );
 };
-
 
 const ListStyle = StyleSheet.create({
     container: {

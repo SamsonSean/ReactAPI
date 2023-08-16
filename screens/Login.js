@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity, style } from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity, style, ActivityIndicator } from 'react-native';
 import { API_URL } from '../url/APIurl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Field from './Template/Field';
@@ -8,7 +8,7 @@ import Btn from './Template/Button';
 const Login = ({ navigation }) => {
   const [uname, setUsername] = useState('');
   const [passw, setPassword] = useState('');
-
+  const [isLoading, setLoading] = useState(false);
 
   const saveToken = async (key, value) => {
     try {
@@ -20,6 +20,7 @@ const Login = ({ navigation }) => {
   }
 
   const handleLogin = () => {
+    setLoading(true);
     try {
       fetch(API_URL + 'Auth/login', {
         method: 'POST',
@@ -36,7 +37,6 @@ const Login = ({ navigation }) => {
         })
         .then((response) => {
           if (response.data !== null) {
-
             if (saveToken('token', response.data)) {
               navigation.navigate('Hero');
             } else {
@@ -50,6 +50,7 @@ const Login = ({ navigation }) => {
         .catch(error => {
           console.log(error);
         })
+        .finally(() => setLoading(false));
     } catch (error) {
       console.log(console.log(JSON.stringify(error)));
     }
@@ -60,13 +61,18 @@ const Login = ({ navigation }) => {
       <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 190 }}>
         <Text style={{ fontSize: 64, fontWeight: "bold" }}>HEROES</Text>
       </View>
-      <View style={{ height: 700, width: 460, alignItems: "center" }}>
-        <Field style={inputStyle.inputField} placeholder="Username" value={uname} onChangeText={setUsername}></Field>
-        <Field style={inputStyle.inputField} placeholder="Password" value={passw} onChangeText={setPassword} secureTextEntry={true}  ></Field>
-        <Btn
-          style={inputStyle.buttonStyle} textColor='white' btnLabel="Login" onPress={handleLogin}></Btn>
 
-      </View>
+      {isLoading ? <ActivityIndicator size="large" color="black" /> : (
+        <View style={{ height: 700, width: 460, alignItems: "center" }}>
+          <Field style={inputStyle.inputField} placeholder="Username" value={uname} onChangeText={setUsername}></Field>
+          <Field style={inputStyle.inputField} placeholder="Password" value={passw} onChangeText={setPassword} secureTextEntry={true}  ></Field>
+          <Btn
+            style={inputStyle.buttonStyle} textColor='white' btnLabel="Login" onPress={handleLogin}></Btn>
+        </View>
+      )
+      }
+
+
     </View>
   );
 };
